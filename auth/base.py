@@ -8,6 +8,7 @@ env = environ.Env(
 )
 
 # Set the project base directory
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file

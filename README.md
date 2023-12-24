@@ -7,6 +7,7 @@
 - [Django Rest Framework](https://www.django-rest-framework.org/)
 - [Python HVAC HASICORP VAULT](https://hvac.readthedocs.io/en/stable/overview.html)
 - [Vault](https://www.vaultproject.io/)
+- [Vault Container](https://hub.docker.com/_/vault/)
 - [Django Environment](https://django-environ.readthedocs.io/en/latest/)
 
 # Vault Setup
