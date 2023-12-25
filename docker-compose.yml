@@ -18,21 +18,20 @@ services:
     container_name: db
     image: mysql:8
     ports:
-      - "3308:3308"
+      - "3306:3306"
     environment:
-      - MYSQL_DATABASE=auth
-      - MYSQL_USER=ratchaphon1412
-      - MYSQL_PASSWORD=Nueng1412
-      - MYSQL_ROOT_PASSWORD=Nueng1412
-      - MYSQL_TCP_PORT=3308
+      MYSQL_DATABASE: "pixelmanauth"
+      MYSQL_USER: "Ratchaphon1412"
+      MYSQL_PASSWORD: "Nueng111"
+      MYSQL_ROOT_PASSWORD: "Nueng111"
+      MYSQL_TCP_PORT: 3306
     volumes:
       - /tmp/app/mysqld:/var/run/mysqld
       - ./db:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      timeout: 20s
+      retries: 10
     networks:
       - auth-network
   vault:
@@ -40,9 +39,11 @@ services:
     ports:
       - "8200:8200"
     environment:
-      - VAULT_DEV_ROOT_TOKEN_ID=Ratchaphon1412
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_TOKEN}
+      VAULT_LOCAL_CONFIG: '{"storage": {"file": {"path": "/vault/file"}}, "default_lease_ttl": "168h", "max_lease_ttl": "720h", "ui": true}'
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
     volumes:
-      - ./vault:/vault/file
+      - ./vault:/vault/file:rw
     networks:
       - auth-network
   nginx:

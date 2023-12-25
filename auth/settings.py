@@ -76,8 +76,12 @@ WSGI_APPLICATION = "auth.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": SECRETE_KEY_SERVICE['data']['data']['ENGINE'],
+        "NAME": SECRETE_KEY_SERVICE['data']['data']['DB_NAME'],
+        "USER": SECRETE_DB_SERVICE['data']['username'],
+        "PASSWORD": SECRETE_DB_SERVICE['data']['password'],
+        "HOST": SECRETE_KEY_SERVICE['data']['data']['DB_HOST'],
+        "PORT": SECRETE_KEY_SERVICE['data']['data']['DB_PORT'],
     }
 }
 
