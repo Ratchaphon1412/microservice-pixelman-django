@@ -9,7 +9,13 @@
 - [Vault](https://www.vaultproject.io/)
 - [Vault Container](https://hub.docker.com/_/vault/)
 - [Django Environment](https://django-environ.readthedocs.io/en/latest/)
+- [Django JWT Simple](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html)
+- [Django Role Permissions](https://django-role-permissions.readthedocs.io/en/stable/index.html)
 
-# Vault Setup
+# Vault
 
 ![Vault](https://developer.hashicorp.com/_next/image?url=https%3A%2F%2Fcontent.hashicorp.com%2Fapi%2Fassets%3Fproduct%3Dtutorials%26version%3Dmain%26asset%3Dpublic%252Fimg%252Fvault%252Fvault-triangle.png%26width%3D1641%26height%3D973&w=1920&q=75)
+
+# JWT
+
+![JWT](https://miro.medium.com/v2/resize:fit:720/format:webp/1*4gZxxTlsPMNSxHD7UCbtqA.jpeg)
