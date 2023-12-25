@@ -14,6 +14,7 @@ from pathlib import Path
 from .base import *
 from .vault import *
 from .rest import *
+from .jwt import *
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_simplejwt",
+    "rolepermissions",
+    "user"
 ]
 
 MIDDLEWARE = [
@@ -49,6 +53,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+# Role Permission
+ROLEPERMISSIONS_MODULE = 'auth.roles'
 
 ROOT_URLCONF = "auth.urls"
 
