@@ -15,23 +15,22 @@ services:
       db:
         condition: service_healthy
   db:
+    image: postgres:13.1-alpine
     container_name: db
-    image: mysql:8
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_DATABASE: "pixelmanauth"
-      MYSQL_USER: "Ratchaphon1412"
-      MYSQL_PASSWORD: "Nueng111"
-      MYSQL_ROOT_PASSWORD: "Nueng111"
-      MYSQL_TCP_PORT: 3306
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - PGPORT=${PGPORT}
     volumes:
-      - /tmp/app/mysqld:/var/run/mysqld
-      - ./db:/var/lib/mysql
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} "]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - auth-network
   vault:
@@ -44,6 +43,7 @@ services:
       VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
     volumes:
       - ./vault:/vault/file:rw
+    entrypoint: vault server -dev -dev-root-token-id=${VAULT_TOKEN}
     networks:
       - auth-network
   nginx:
