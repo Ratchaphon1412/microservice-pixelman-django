@@ -11,6 +11,13 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         fields = "__all__"
 
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        return super().update(instance, validated_data)
+
 
 class UserProfilesSerializer(serializers.ModelSerializer):
 
@@ -19,8 +26,41 @@ class UserProfilesSerializer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+
         }
+
+
+class UserProfilesUpdateSerializer(serializers.Serializer):
+    MALE = "Male"
+    FEMALE = "Female"
+    OTHER = "Other"
+    GENDER_IN_CHOICES = [
+        (MALE, "Male"),
+        (FEMALE, "Female"),
+        (OTHER, "Other"),
+    ]
+    address_id = serializers.IntegerField(required=True)
+    first_name = serializers.CharField(max_length=120, required=False)
+    last_name = serializers.CharField(max_length=120, required=False)
+    username = serializers.CharField(max_length=120, required=False)
+    gender = serializers.ChoiceField(
+        choices=GENDER_IN_CHOICES, allow_null=True, allow_blank=True)
+    country = serializers.CharField(max_length=120, required=False)
+    profile = serializers.URLField(
+        max_length=255, required=False, allow_blank=True)
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get(
+            'first_name', instance.first_name)
+        instance.last_name = validated_data.get(
+            'last_name', instance.last_name)
+        instance.username = validated_data.get('username', instance.username)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.country = validated_data.get('country', instance.country)
+        instance.profile = validated_data.get('profile', instance.profile)
+        instance.save()
+        return instance
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
