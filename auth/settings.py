@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rolepermissions",
-    "user"
+    "user",
+    "middleware",
 ]
 
 MIDDLEWARE = [
@@ -84,13 +85,24 @@ DATABASES = {
     "default": {
         "ENGINE": SECRETE_KEY_SERVICE['data']['data']['ENGINE'],
         "NAME": SECRETE_KEY_SERVICE['data']['data']['DB_NAME'],
-        "USER": SECRETE_DB_SERVICE['data']['username'],
-        "PASSWORD": SECRETE_DB_SERVICE['data']['password'],
+        "USER": SECRETE_KEY_SERVICE['data']['data']['DB_USER'],
+        "PASSWORD": SECRETE_KEY_SERVICE['data']['data']['DB_PASSWORD'],
         "HOST": SECRETE_KEY_SERVICE['data']['data']['DB_HOST'],
         "PORT": SECRETE_KEY_SERVICE['data']['data']['DB_PORT'],
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django_postgres_vault',
+#         'NAME': SECRETE_KEY_SERVICE['data']['data']['DB_NAME'],
+#         'HOST': SECRETE_KEY_SERVICE['data']['data']['DB_HOST'],
+#         'PORT': SECRETE_KEY_SERVICE['data']['data']['DB_PORT'],
+#         'VAULT_ADDR': env('VAULT_URI'),
+#         'VAULT_TOKEN': env('VAULT_TOKEN'),
+#         'VAULT_ROLE_NAME': env('VAULT_DB_ROLE'),
+#         'VAULT_DB_MOUNT_POINT': env('VAULT_DB_PATH'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
