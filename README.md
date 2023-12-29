@@ -12,6 +12,7 @@
 - [Django JWT Simple](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html)
 - [Django Role Permissions](https://django-role-permissions.readthedocs.io/en/stable/index.html)
 - [Django Postgress Vault](https://github.com/jciskey/django_postgres_vault)
+- [Open source Avatars Generate API](https://avatars.oxro.io/)
 
 # Vault
 

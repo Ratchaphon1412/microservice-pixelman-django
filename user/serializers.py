@@ -4,6 +4,7 @@ from .models import *
 from rolepermissions.roles import assign_role
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.models import update_last_login
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -77,6 +78,13 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         user = self.Meta.model(**validated_data)
         if password is not None:
             user.set_password(password)
+
+        first_name = validated_data.get('first_name')
+        last_name = validated_data.get('last_name')
+
+        url_profile = "https://avatar.oxro.io/avatar.svg?name=" + \
+            first_name+"+"+last_name+"&background=ffd60a&color=fff&length=2"
+        user.profile = url_profile
         user.save()
         assign_role(user, 'user')
 
@@ -87,6 +95,7 @@ class LoginSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+        update_last_login(None, user)
         return token
 
     def validate(self, attrs):
