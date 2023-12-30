@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rolepermissions",
     "user",
     "middleware",
+    "infrastructure"
 ]
 
 MIDDLEWARE = [
