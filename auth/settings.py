@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     "rolepermissions",
     "user",
     "middleware",
-    "infrastructure"
+    "infrastructure",
+    "django_password_validators",
+    "django_password_validators.password_history",
 ]
 
 MIDDLEWARE = [
@@ -108,9 +110,16 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
+# If you want, you can change the default hasher for the password history.
+# DPV_DEFAULT_HISTORY_HASHER = 'django_password_validators.password_history.hashers.HistoryHasher'
+
 AUTH_PASSWORD_VALIDATORS = [
+
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTION": {
+            "user_attributes": ["email", "username", "first_name", "last_name", "phone"]
+        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -120,6 +129,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+    {
+        'NAME': 'django_password_validators.password_history.password_validation.UniquePasswordsValidator',
+        'OPTIONS': {
+            # How many recently entered passwords matter.
+            # Passwords out of range are deleted.
+            # Default: 0 - All passwords entered by the user. All password hashes are stored.
+            'last_passwords': 5  # Only the last 5 passwords entered by the user
+        }
+    },
+    {
+        'NAME': 'django_password_validators.password_character_requirements.password_validation.PasswordCharacterValidator',
+        'OPTIONS': {
+            'min_length_digit': 1,
+
+            'min_length_special': 1,
+            'min_length_lower': 1,
+            'min_length_upper': 1,
+
+            'special_characters': "~!@#$%^&*()_+{}\":;'[]"
+        }
     },
 ]
 
