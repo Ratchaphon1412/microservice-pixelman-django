@@ -8,6 +8,8 @@ from .serializers import *
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 
+from infrastructure.kafka.producer import ProducerKafka
+
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -23,6 +25,10 @@ class RegisterAPIView(APIView):
         serializer = RegisterUserSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            producer = ProducerKafka()
+
+            # serialized_data = {'user': serializer.data}
+            producer.publish('user_create', 'create', serializer.data)
             return Response({"message": "Create User Success!"}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
