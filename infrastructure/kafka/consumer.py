@@ -4,7 +4,7 @@ import threading
 from confluent_kafka import Consumer
 from confluent_kafka import KafkaError
 from confluent_kafka import KafkaException
-from Infrastructure.Kafka import setting
+from infrastructure.kafka.setting import *
 
 
 class ConsumerKafka(threading.Thread):
@@ -12,7 +12,7 @@ class ConsumerKafka(threading.Thread):
         threading.Thread.__init__(self)
         self.topic = topic
         self.func = func
-        self.consumer = Consumer(setting.CONF_KAFKA)
+        self.consumer = Consumer(CONF_KAFKA)
 
     def run(self):
         print("Start Consumer "+self.topic)
