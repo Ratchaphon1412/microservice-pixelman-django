@@ -13,4 +13,6 @@ urlpatterns = [
     path('register/', RegisterAPIView.as_view(), name='register'),
     path('profile/', UserProfilesAPIView.as_view(), name='profile'),
     path('address/', AddressAPIView.as_view(), name='address'),
+    path('reverify/', ReverifyEmailAPIView.as_view(), name='reverify'),
+    path('active/', ActiveUserAPIView.as_view(), name='active'),
 ]
