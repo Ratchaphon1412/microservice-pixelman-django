@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 
 from infrastructure.kafka.producer import ProducerKafka
+from infrastructure.service import Facade
 
 
 class RegisterAPIView(APIView):
@@ -26,10 +27,85 @@ class RegisterAPIView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             producer = ProducerKafka()
+            service = Facade()
+            print(serializer.data)
+            # generate token verify email
+            token = service.security.encrypt.verify_email_encryption(
+                serializer.data['email'], serializer.data['id'])
+            # send token to email service
+            verify_email = {
+                "email": serializer.data['email'],
+                "token": token
+            }
+            producer.publish('email_verify', 'send', verify_email)
 
             # serialized_data = {'user': serializer.data}
             producer.publish('user_create', 'create', serializer.data)
+
             return Response({"message": "Create User Success!"}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReverifyEmailAPIView(APIView):
+    def post(self, request):
+        """
+        Reverify email
+
+        Return: Message
+        Required: Email
+
+
+        """
+
+        serializer = ReverifyEmailSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            producer = ProducerKafka()
+            service = Facade()
+            user = UserProfiles.objects.filter(
+                email=serializer.data['email']).first()
+
+            # generate token verify email
+            token = service.security.encrypt.verify_email_encryption(
+                serializer.data['email'], user.id)
+            # send token to email service
+            verify_email = {
+                "email": serializer.data['email'],
+                "token": token
+            }
+            producer.publish('email_verify', 'send', verify_email)
+
+            return Response({"message": "Reverify Email Success!"}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActiveUserAPIView(APIView):
+    def post(self, request):
+        """
+        Active user
+
+        Return: Message
+        Required: Email
+
+
+        """
+
+        serializer = VerifyEmailSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+
+            service = Facade()
+            decryption = service.security.encrypt.verify_email_decryption(
+                serializer.data.get("token"))
+            _, uid = decryption.split(",")
+
+            userUid = UserProfiles.objects.filter(
+                id=uid).first()
+            if userUid:
+                userUid.is_email_verified = True
+                userUid.save()
+                return Response({"message": "Active User Success!"}, status=status.HTTP_200_OK)
+            return Response({"error": "User not found"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
