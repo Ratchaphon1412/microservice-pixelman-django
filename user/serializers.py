@@ -124,3 +124,27 @@ class LoginSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError("User is not verified.")
 
         return super(LoginSerializer, self).validate(attrs)
+
+
+class ReverifyEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        user = UserProfiles.objects.filter(
+            email=attrs.get('email', '')).first()
+        if user is None:
+            raise serializers.ValidationError("User not found.")
+        if user.is_email_verified:
+            raise serializers.ValidationError("User is verified.")
+
+        return super(ReverifyEmailSerializer, self).validate(attrs)
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+
+    def validate(self, attr):
+        token = attr.get('token', '')
+        if token == '':
+            raise serializers.ValidationError("Token is required.")
+        return super(VerifyEmailSerializer, self).validate(attr)
