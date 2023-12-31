@@ -14,6 +14,7 @@
 - [Django Postgress Vault](https://github.com/jciskey/django_postgres_vault)
 - [Open source Avatars Generate API](https://avatars.oxro.io/)
 - [Django Microservice with kafka](https://medium.com/@mansha99/microservices-using-django-and-kafka-3776e8592ef3)
+- [Django Password Validation](https://github.com/fizista/django-password-validators)
 
 # Vault
 

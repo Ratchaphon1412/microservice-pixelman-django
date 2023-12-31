@@ -241,6 +241,23 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-password-validators"
+version = "1.7.3"
+description = "Additional libraries for validating passwords in Django."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-password-validators-1.7.3.tar.gz", hash = "sha256:7175aefa6e86dc002dd3539327bf2d752097651704927dc409a669259e0d2195"},
+    {file = "django_password_validators-1.7.3-py3-none-any.whl", hash = "sha256:f243a82957e9b17a0c7cf5580f9d7588471cb6530c2dce7ee4e1222dddfe5768"},
+]
+
+[package.dependencies]
+django = ">=3.0"
+
+[package.extras]
+test = ["bump-my-version (>=0.12)", "tox (>=4.11)"]
+
+[[package]]
 name = "django-postgres-vault"
 version = "0.1.2"
 description = "A simple Django database backend that allows rotating access credentials via HashiCorp Vault"
@@ -508,4 +525,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "96481468a125c21f29935d63d04fbd89147222f93e095b38dccbef688820c2f5"
+content-hash = "f0e421ae89de54baa1509784bfe97d933369aac8d0734a319da6c02a98a7e6db"

@@ -21,6 +21,7 @@ python-gettext = "^5.0"
 django-postgres-vault = "^0.1.2"
 psycopg2 = "^2.9.9"
 confluent-kafka = "^2.3.0"
+django-password-validators = "^1.7.3"
 
 
 [build-system]
