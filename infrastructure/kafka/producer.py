@@ -17,3 +17,4 @@ class ProducerKafka:
         print('Inside UserService: Sending to Kafka: ')
         print(body)
         self.producer.produce(topic, key=key, value=json.dumps(body))
+        self.producer.flush()
