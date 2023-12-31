@@ -17,7 +17,10 @@
 - [Django Password Validation](https://github.com/fizista/django-password-validators)
 - [Python encryption with Fernet](https://cryptography.io/en/latest/)
 - [Django verify email](https://www.rockandnull.com/django-email-verification/)
+
 # Architecture
+
+![Architecture](https://cdn.discordapp.com/attachments/848122649593905184/1191136827072069713/Auth_Ser_1.png?ex=65a4579d&is=6591e29d&hm=2b88731bfbe86e8196488fe13c9bb15f690ec4c002d93a4510db4830203712d1&)
 
 # Vault
 
