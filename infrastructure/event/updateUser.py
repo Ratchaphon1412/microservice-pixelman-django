@@ -1,7 +1,7 @@
 
 def updateVerifyEmail(data):
-    pass
+    print("verify email")
 
 
 def updateOmiseKey(data):
-    pass
+    print("update omise key")
