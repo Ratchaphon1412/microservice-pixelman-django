@@ -15,6 +15,9 @@
 - [Open source Avatars Generate API](https://avatars.oxro.io/)
 - [Django Microservice with kafka](https://medium.com/@mansha99/microservices-using-django-and-kafka-3776e8592ef3)
 - [Django Password Validation](https://github.com/fizista/django-password-validators)
+- [Python encryption with Fernet](https://cryptography.io/en/latest/)
+- [Django verify email](https://www.rockandnull.com/django-email-verification/)
+# Architecture
 
 # Vault
 
