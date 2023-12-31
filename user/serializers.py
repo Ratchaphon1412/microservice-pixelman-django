@@ -5,6 +5,8 @@ from rolepermissions.roles import assign_role
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import update_last_login
+from django.contrib.auth import password_validation
+from django.core import exceptions
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -89,6 +91,21 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         assign_role(user, 'user')
 
         return user
+
+    def validate(self, attrs):
+        password = attrs.get('password', None)
+        if password is None:
+            raise serializers.ValidationError("Password is required.")
+        errors = dict()
+        try:
+            password_validation.validate_password(password)
+        except exceptions.ValidationError as e:
+
+            errors['password'] = list(e.messages)
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return super(RegisterUserSerializer, self).validate(attrs)
 
 
 class LoginSerializer(TokenObtainPairSerializer):
