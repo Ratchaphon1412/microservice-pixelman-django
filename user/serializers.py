@@ -148,3 +148,45 @@ class VerifyEmailSerializer(serializers.Serializer):
         if token == '':
             raise serializers.ValidationError("Token is required.")
         return super(VerifyEmailSerializer, self).validate(attr)
+
+
+class ProductValidateSerializer(serializers.Serializer):
+    product_id = serializers.CharField(required=True)
+    name = serializers.CharField(required=True)
+    price = serializers.FloatField(required=True)
+    image = serializers.URLField(required=True)
+    category = serializers.CharField(required=True)
+
+
+class CartValidateSerializer(serializers.Serializer):
+    quantity = serializers.IntegerField(required=True)
+    size = serializers.CharField(required=True)
+    color = serializers.CharField(required=True)
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"
+        
+class CartSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    class Meta:
+        model = Cart
+        fields = ["id","product","quantity","size","color","created_at","updated_at"]
+        
+        depth = 1
+
+class ShoppingCartValidateSerializer(serializers.Serializer):
+    total = serializers.FloatField(required=True)
+
+class CartUpdateSerializer(serializers.Serializer):
+    product_id = serializers.CharField(required=True)
+    quantity = serializers.IntegerField(required=True, min_value=1)
+    size = serializers.CharField(required=True)
+    color = serializers.CharField(required=True)
+    
+class CartDeleteSerializer(serializers.Serializer):
+    product_id = serializers.CharField(required=True)
+    size = serializers.CharField(required=True)
+    color = serializers.CharField(required=True)
