@@ -15,4 +15,5 @@ urlpatterns = [
     path('address/', AddressAPIView.as_view(), name='address'),
     path('reverify/', ReverifyEmailAPIView.as_view(), name='reverify'),
     path('active/', ActiveUserAPIView.as_view(), name='active'),
+    path('cart/', CartAPIView.as_view(), name='cart'),
 ]
