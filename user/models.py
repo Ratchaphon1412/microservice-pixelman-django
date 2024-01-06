@@ -43,3 +43,38 @@ class Address(models.Model):
     country = models.CharField(max_length=255, blank=True, null=True)
     province = models.CharField(max_length=255, blank=True, null=True)
     zip_code = models.CharField(max_length=255, blank=True, null=True)
+
+
+class Product(models.Model):
+    id = models.AutoField(primary_key=True)
+    product_id = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    price = models.FloatField(blank=True, null=True)
+    image = models.URLField(max_length=255, blank=True, null=True)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    # quantity = models.IntegerField(blank=True, null=True)
+    # size = models.CharField(max_length=255, blank=True, null=True)
+    # color = models.CharField(max_length=255, blank=True, null=True)
+    # c
+
+
+class Cart(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(
+        UserProfiles, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(blank=True, null=True)
+    size = models.CharField(max_length=255, blank=True, null=True)
+    color = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+
+class ShoppingCart(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(
+        UserProfiles, on_delete=models.SET_NULL, null=True)
+    total = models.FloatField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
