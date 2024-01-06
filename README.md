@@ -17,6 +17,7 @@
 - [Django Password Validation](https://github.com/fizista/django-password-validators)
 - [Python encryption with Fernet](https://cryptography.io/en/latest/)
 - [Django verify email](https://www.rockandnull.com/django-email-verification/)
+- [E-commerce Database Design Cart](https://fabric.inc/blog/commerce/shopping-cart-database-design)
 
 # Architecture
 
