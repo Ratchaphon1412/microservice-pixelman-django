@@ -230,3 +230,119 @@ class AddressAPIView(APIView):
         address.delete()
 
         return Response({"message": "Delete Address Success!"}, status=status.HTTP_200_OK)
+
+
+class CartAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+        Get all cart of user
+
+        Return: List of cart 
+        Required: Authenticated
+
+        """
+        cart = Cart.objects.filter(user=request.user)
+        
+        serializers  = CartSerializer(cart, many=True)
+        
+        return Response(serializers.data, status=status.HTTP_200_OK)
+    
+
+    def post(self, request):
+        """
+        Create new cart
+
+        Return: Message
+        Required: Authenticated
+
+        """
+        product_serializer = ProductValidateSerializer(data=request.data)
+        
+        if product_serializer.is_valid(raise_exception=True):
+            product,_ = Product.objects.get_or_create(
+                product_id=product_serializer.validated_data.get("product_id"),
+                name=product_serializer.validated_data.get("name"),
+                price=product_serializer.validated_data.get("price"),
+                image=product_serializer.validated_data.get("image"),
+                category=product_serializer.validated_data.get("category")
+                
+                )
+                
+            if product:
+                serializer = CartValidateSerializer(data=request.data)
+                if serializer.is_valid(raise_exception=True):
+                    cart,create = Cart.objects.get_or_create(
+                        user=request.user,
+                        product=product,
+                        quantity=serializer.validated_data.get("quantity"),
+                        size=serializer.validated_data.get("size"),
+                        color=serializer.validated_data.get("color")
+                    )
+                    
+                    if create:
+                        return Response({"message": "Create Cart Success!"}, status=status.HTTP_201_CREATED)
+                
+                        
+                    
+                    return Response({"error": "Create Cart Failed or IF Product exist Please Update!"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request):
+        """
+        Update cart
+
+        Return: Message
+        Required: Authenticated
+
+        """
+        serializer = CartUpdateSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            product = Product.objects.filter(product_id=serializer.validated_data.get("product_id")).first()
+
+            if product:
+                cart = Cart.objects.filter(user=request.user,product_id=product.id, size=serializer.validated_data.get("size"), color=serializer.validated_data.get("color")).first()
+                
+                if cart:
+                   
+                    # Update the cart details here
+                    
+                    cart.quantity = serializer.validated_data.get("quantity")
+                    cart.save()
+                    
+                    return Response({"message": "Update Cart Success!"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Product does not have  size and color do not match."}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"error": "Product does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self,request):
+        """
+        Delete cart
+
+        Return: Message
+        Required: Authenticated
+
+        """
+        serializer = CartDeleteSerializer(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            product = Product.objects.filter(product_id=serializer.validated_data.get("product_id")).first()
+
+            if product:
+                cart = Cart.objects.filter(user=request.user,product_id=product.id, size=serializer.validated_data.get("size"), color=serializer.validated_data.get("color")).first()
+                
+                if cart:
+                    cart.delete()
+                    
+                    return Response({"message": "Delete Cart Success!"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": "Product does not have  size and color do not match."}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"error": "Product does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
