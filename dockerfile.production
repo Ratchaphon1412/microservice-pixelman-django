@@ -18,5 +18,6 @@ RUN poetry config virtualenvs.create false \
 
 EXPOSE 80
 RUN chmod +x ./server.sh
+RUN sh ./server.sh
 
-ENTRYPOINT ["./server.sh"]
+CMD ["poetry","run","gunicorn","--bind", ":80", "auth.wsgi:application"]
