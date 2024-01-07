@@ -2,3 +2,4 @@ db/
 .env
 vault/
 postgres-data/
+poetry.lock
