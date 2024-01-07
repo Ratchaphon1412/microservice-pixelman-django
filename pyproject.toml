@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "djangoauth"
+name = "auth"
 version = "0.1.0"
 description = ""
 authors = ["ratchaphon1412 <ratchaphon.h111@gmail.com>"]
