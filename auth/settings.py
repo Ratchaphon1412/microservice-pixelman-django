@@ -174,4 +174,7 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+# URL Frontend
+BASE_URL_FRONTEND=SECRETE_KEY_SERVICE['data']['data']['BASE_URL_FRONTEND']
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

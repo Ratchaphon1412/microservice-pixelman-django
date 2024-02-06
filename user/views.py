@@ -7,7 +7,7 @@ from .serializers import *
 # Create your views here.
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
-
+from django.conf import settings
 from infrastructure.kafka.producer import ProducerKafka
 from infrastructure.service import Facade
 
@@ -34,10 +34,10 @@ class RegisterAPIView(APIView):
                 serializer.data['email'], serializer.data['id'])
             # send token to email service
             verify_email = {
-                "email": serializer.data['email'],
-                "token": token
+                "to": serializer.data['email'],
+                "link": settings.BASE_URL_FRONTEND +"verify/account/"+token,
             }
-            producer.publish('email_verify', 'send', verify_email)
+            producer.publish('email-service-topic', 'verify', verify_email)
 
             # serialized_data = {'user': serializer.data}
             producer.publish('user_create', 'create', serializer.data)
@@ -70,10 +70,10 @@ class ReverifyEmailAPIView(APIView):
                 serializer.data['email'], user.id)
             # send token to email service
             verify_email = {
-                "email": serializer.data['email'],
-                "token": token
+                "to": serializer.data['email'],
+                "link": settings.BASE_URL_FRONTEND +"verify/account/"+token,
             }
-            producer.publish('email_verify', 'send', verify_email)
+            producer.publish('email-service-topic', 're-verify', verify_email)
 
             return Response({"message": "Reverify Email Success!"}, status=status.HTTP_200_OK)
 
