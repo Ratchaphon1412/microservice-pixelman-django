@@ -11,5 +11,5 @@ class Command(BaseCommand):
         # consumer_user_verify = ConsumerKafka('user_verify', updateVerifyEmail)
         # consumer_user_verify.start()
         consumer_user_create_omise = ConsumerKafka(
-            'auth-service', updateOmiseKey)
+            'auth-service-topic', updateOmiseKey)
         consumer_user_create_omise.start()
