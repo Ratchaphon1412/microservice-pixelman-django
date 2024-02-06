@@ -37,6 +37,7 @@ class ConsumerKafka(threading.Thread):
                     print(msg.value())
                     data = json.loads(msg.value())
                     # print(data['email'])
-                    self.func(data)
+                    print(type(msg.topic()),msg.topic())
+                    self.func(msg.topic(),msg.key().decode("utf-8"),data)
         finally:
             self.consumer.close()

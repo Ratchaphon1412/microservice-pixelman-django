@@ -8,8 +8,8 @@ class Command(BaseCommand):
     help = 'Launches Listener for all message : Kafka'
 
     def handle(self, *args, **options):
-        consumer_user_verify = ConsumerKafka('user_verify', updateVerifyEmail)
-        consumer_user_verify.start()
+        # consumer_user_verify = ConsumerKafka('user_verify', updateVerifyEmail)
+        # consumer_user_verify.start()
         consumer_user_create_omise = ConsumerKafka(
-            'user_create_omise', updateOmiseKey)
+            'auth-service', updateOmiseKey)
         consumer_user_create_omise.start()
