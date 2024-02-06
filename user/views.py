@@ -40,7 +40,7 @@ class RegisterAPIView(APIView):
             producer.publish('email-service-topic', 'verify', verify_email)
 
             # serialized_data = {'user': serializer.data}
-            producer.publish('user_create', 'create', serializer.data)
+            producer.publish('payment-service-topic', 'create_user', serializer.data)
 
             return Response({"message": "Create User Success!"}, status=status.HTTP_201_CREATED)
 
