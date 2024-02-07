@@ -11,7 +11,7 @@ def updateOmiseKey(topic,key,data):
 
     print(type(data), data["email"])
     
-    if topic == "auth-service":
+    if topic == "auth-service-topic":
     
         if key == "create_token":
             user = UserProfiles.objects.filter(email=data["email"]).update(
