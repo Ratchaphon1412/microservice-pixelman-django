@@ -46,11 +46,13 @@ INSTALLED_APPS = [
     "infrastructure",
     "django_password_validators",
     "django_password_validators.password_history",
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -59,6 +61,13 @@ MIDDLEWARE = [
 ]
 # Role Permission
 ROLEPERMISSIONS_MODULE = 'auth.roles'
+
+# CORS
+CORS_ALLOWED_ORIGINS=True
+CORS_ALLOWED_ORIGINS=[
+    "http://localhost:3000",
+    "*"
+]
 
 ROOT_URLCONF = "auth.urls"
 
