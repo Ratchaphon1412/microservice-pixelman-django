@@ -66,7 +66,7 @@ ROLEPERMISSIONS_MODULE = 'auth.roles'
 CORS_ALLOWED_ORIGINS=True
 CORS_ALLOWED_ORIGINS=[
     "http://localhost:3000",
-    "*"
+    
 ]
 CORS_ALLOW_METHODS = (
     "DELETE",
