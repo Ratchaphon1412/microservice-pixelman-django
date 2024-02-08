@@ -75,6 +75,6 @@ class ShoppingCart(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         UserProfiles, on_delete=models.SET_NULL, null=True)
-    total = models.FloatField(blank=True, null=True)
+    total = models.FloatField(blank=True, null=True,default=0)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)

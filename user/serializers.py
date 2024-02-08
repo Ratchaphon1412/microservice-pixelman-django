@@ -169,8 +169,21 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = "__all__"
         
+        
+class ShoppingCartSerializer(serializers.ModelSerializer):
+    
+    
+    class Meta:
+        model = ShoppingCart
+        fields = "__all__"
+        
+        
+
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
+    
+    
+    
     class Meta:
         model = Cart
         fields = ["id","product","quantity","size","color","created_at","updated_at"]

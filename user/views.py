@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import *
+
+from .models import *
 # Create your views here.
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
@@ -26,6 +28,8 @@ class RegisterAPIView(APIView):
         serializer = RegisterUserSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            ShoppingCart.objects.create(user=serializer.instance, total=0)
+            
             producer = ProducerKafka()
             service = Facade()
             print(serializer.data)
@@ -244,10 +248,15 @@ class CartAPIView(APIView):
 
         """
         cart = Cart.objects.filter(user=request.user)
-        
+        shop = ShoppingCart.objects.get(user=request.user)
+
         serializers  = CartSerializer(cart, many=True)
+        shopSerialize = ShoppingCartSerializer(shop)
         
-        return Response(serializers.data, status=status.HTTP_200_OK)
+        
+        
+        return Response({"cart":serializers.data, "shopping_cart":shopSerialize.data}
+             , status=status.HTTP_200_OK)
     
 
     def post(self, request):
@@ -282,6 +291,18 @@ class CartAPIView(APIView):
                     )
                     
                     if create:
+                        shopping,createShoppingCart= ShoppingCart.objects.get_or_create(
+                            user=request.user,
+                            
+                        )
+                        
+                        if createShoppingCart:
+                            shopping.total = product.price * serializer.validated_data.get("quantity")
+                            shopping.save()
+                            return Response({"message": "Create Cart Success!"}, status=status.HTTP_201_CREATED)
+                        else:
+                            shopping.total += product.price * serializer.validated_data.get("quantity")
+                            shopping.save()
                         return Response({"message": "Create Cart Success!"}, status=status.HTTP_201_CREATED)
                 
                         
@@ -337,6 +358,18 @@ class CartAPIView(APIView):
                 cart = Cart.objects.filter(user=request.user,product_id=product.id, size=serializer.validated_data.get("size"), color=serializer.validated_data.get("color")).first()
                 
                 if cart:
+                    product = cart.product
+                    shopping = ShoppingCart.objects.filter(user=request.user).first()
+                    
+                    shopping.total -= product.price * cart.quantity
+                    
+                    if shopping.total <= 0:
+                        shopping.total = 0
+                        
+                    shopping.save()
+                    
+                    
+                    
                     cart.delete()
                     
                     return Response({"message": "Delete Cart Success!"}, status=status.HTTP_200_OK)

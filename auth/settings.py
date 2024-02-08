@@ -15,13 +15,17 @@ from .base import *
 from .vault import *
 from .rest import *
 from .jwt import *
-
+from cryptography.fernet import Fernet
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = SECRETE_KEY_SERVICE['data']['data']['SECRET_KEY']
+
+#Encryption and Decryption key
+KEY_SECURITY = Fernet.generate_key()
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = SECRETE_KEY_SERVICE['data']['data']['DEBUG']

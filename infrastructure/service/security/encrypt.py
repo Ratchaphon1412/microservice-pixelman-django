@@ -1,10 +1,16 @@
 from cryptography.fernet import Fernet
+
 from django.conf import settings
 
-key = bytes(settings.SECRET_KEY, encoding='utf-8')
+key = settings.KEY_SECURITY
+
 
 
 class Encryption:
+    
+
+        
+        
 
     def verify_email_encryption(self, email, uid):
         try:
@@ -19,7 +25,7 @@ class Encryption:
 
     def verify_email_decryption(self, token):
         try:
-
+            
             f = Fernet(key)
             token = bytes(token, encoding='utf-8')
             token = f.decrypt(token)
