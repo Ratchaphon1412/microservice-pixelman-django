@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
+from django.conf import settings
 
-key = Fernet.generate_key()
+key = bytes(settings.SECRET_KEY, encoding='utf-8')
 
 
 class Encryption:
